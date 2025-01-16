@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class Journal
 {
     public List<Entry> _entries = new List<Entry>();
 
-    // Add a new entry to the journal
     public void AddEntry(Entry newEntry)
     {
         _entries.Add(newEntry);
     }
 
-    // Display all entries
     public void DisplayAll()
     {
         if (_entries.Count == 0)
@@ -28,21 +27,24 @@ public class Journal
         }
     }
 
-    // Save the journal to a file
-    public void SaveToFile(string file)
+    public void DisplayEntriesByTag(string tag)
     {
-        using (StreamWriter writer = new StreamWriter(file))
-        {
-            foreach (var entry in _entries)
-            {
-                writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}");
-            }
-        }
-        Console.WriteLine($"Journal successfully saved to {file}");
-    }
+        var filteredEntries = _entries.Where(e => e._tags.Contains(tag)).ToList();
 
-    // Load the journal from a file
-    public void LoadFromFile(string file)
+        if (filteredEntries.Count == 0)
+        {
+            Console.WriteLine($"No entries found with the tag: {tag}");
+            return;
+        }
+
+        Console.WriteLine($"Entries with tag: {tag}");
+        foreach (var entry in filteredEntries)
+        {
+            entry.Display();
+            Console.WriteLine();
+        }
+    }
+        public void LoadFromFile(string file)
     {
         if (File.Exists(file))
         {
@@ -50,9 +52,10 @@ public class Journal
             foreach (var line in File.ReadAllLines(file))
             {
                 string[] parts = line.Split('|');
-                if (parts.Length == 3) // Ensure the line has the expected format
+                if (parts.Length == 4) // Ensure the line has the expected format
                 {
-                    _entries.Add(new Entry(parts[1], parts[2]) { _date = parts[0] });
+                    List<string> tags = new List<string>(parts[3].Split(',')); // Convert tags back to a list
+                    _entries.Add(new Entry(parts[1], parts[2], tags) { _date = parts[0] });
                 }
             }
             Console.WriteLine($"Journal successfully loaded from {file}");
@@ -61,5 +64,17 @@ public class Journal
         {
             Console.WriteLine($"Error: File '{file}' not found. Please check the file name and try again.");
         }
+    }    
+    public void SaveToFile(string file)
+    {
+        using (StreamWriter writer = new StreamWriter(file))
+        {
+            foreach (var entry in _entries)
+            {
+                string tags = string.Join(",", entry._tags); // Convert tags to a single string
+                writer.WriteLine($"{entry._date}|{entry._promptText}|{entry._entryText}|{tags}");
+            }
+        }
+        Console.WriteLine($"Journal successfully saved to {file}");
     }
 }
