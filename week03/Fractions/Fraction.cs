@@ -40,4 +40,16 @@ public class Fraction
     {
         _denominator = denominator;
     }
+
+    public string GetFractionString()
+{
+    return $"{_numerator}/{_denominator}";
 }
+
+public double GetDecimalValue()
+{
+    return (double)_numerator / _denominator;
+}
+
+}
+
