@@ -1,35 +1,42 @@
-public class Word
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Scripture
 {
-    private string _text;
-    private bool _isHidden;
+    private Reference _reference;
+    private List<Word> _words;
 
-    // The constructor to initialize the word
-    public Word(string text)
+    public Scripture(Reference reference, string text)
     {
-        _text = text;
-        _isHidden = false; 
+        _reference = reference;
+        _words = text.Split(' ').Select(word => new Word(word)).ToList();
     }
 
-    // To hide the word
-    public void Hide()
+    // Hides a specified number of random words
+    public void HideRandomWords(int numberToHide)
     {
-        _isHidden = true;
+        Random random = new Random();
+        var wordsToHide = _words
+            .Where(word => !word.IsHidden()) 
+            .OrderBy(_ => random.Next())
+            .Take(numberToHide);
+
+        foreach (var word in wordsToHide)
+        {
+            word.Hide();
+        }
     }
 
-    // To reveal the word
-    public void Show()
-    {
-        _isHidden = false;
-    }
-
-    // Returns whether the word is hidden
-    public bool IsHidden()
-    {
-        return _isHidden;
-    }
-
+    // Returns the scripture as a string with the reference and the words
     public string GetDisplayText()
     {
-        return _isHidden ? new string('_', _text.Length) : _text;
+        string wordsText = string.Join(" ", _words.Select(word => word.GetDisplayText()));
+        return $"{_reference.GetDisplayText()} {wordsText}";
+    }
+
+    public bool IsCompletelyHidden()
+    {
+        return _words.All(word => word.IsHidden());
     }
 }
