@@ -13,7 +13,7 @@ class Video
         _title = title;
         _author = author;
         _length = length;
-        _comments = new List<Comment>(); // Inicializamos la lista de comentarios
+        _comments = new List<Comment>(); 
     }
 
     public void AddComment(Comment comment)
