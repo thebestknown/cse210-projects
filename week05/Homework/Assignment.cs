@@ -1,5 +1,3 @@
-using System;
-
 public class Assignment
 {
     protected string _studentName;
