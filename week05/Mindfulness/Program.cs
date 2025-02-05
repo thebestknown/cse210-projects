@@ -1,7 +1,5 @@
 using System;
 
-using System;
-
 class Program
 {
     static void Main()
@@ -14,7 +12,8 @@ class Program
             Console.WriteLine("1. Start breathing activity");
             Console.WriteLine("2. Start reflecting activity");
             Console.WriteLine("3. Start listing activity");
-            Console.WriteLine("4. Quit");
+            Console.WriteLine("4. View activity log");
+            Console.WriteLine("5. Quit");
             Console.Write("Select a choice from the menu: ");
 
             string choice = Console.ReadLine();
@@ -36,7 +35,14 @@ class Program
             }
             else if (choice == "4")
             {
+                Activity.DisplayActivityLog();
+                Console.WriteLine("\nPress Enter to return to the menu...");
+                Console.ReadLine();
+            }
+            else if (choice == "5")
+            {
                 Console.WriteLine("\nExiting program. Goodbye!");
+                Activity.DisplayActivityLog(); // Show log before exiting
                 System.Threading.Thread.Sleep(2000);
                 break;
             }
