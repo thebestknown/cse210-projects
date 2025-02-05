@@ -1,7 +1,10 @@
-class BreathingActivity : Activity
+using System;
+using System.Threading;
+
+public class BreathingActivity : Activity
 {
-    public BreathingActivity() : base("Breathing Activity", 
-        "This activity will help you relax by walking you through breathing in and out slowly.")
+    public BreathingActivity() : base("Breathing Activity",
+        "This activity will help you relax by walking you through breathing in and out slowly. Clear your mind and focus on your breathing.")
     {
     }
 
@@ -9,13 +12,18 @@ class BreathingActivity : Activity
     {
         StartActivity();
         int elapsedTime = 0;
+
         while (elapsedTime < _duration)
         {
-            Console.WriteLine("Breathe in...");
-            ShowCountdown(3);
-            Console.WriteLine("Breathe out...");
-            ShowCountdown(3);
-            elapsedTime += 6;
+            Console.Write("Breathe in..."); 
+            ShowCountdown(4);
+            Console.WriteLine(); 
+            
+            Console.Write("Now breathe out...");
+            ShowCountdown(6);
+            Console.WriteLine(); 
+
+            elapsedTime += 10;
         }
         EndActivity();
     }
