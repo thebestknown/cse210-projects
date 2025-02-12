@@ -1,4 +1,4 @@
 0
-SimpleGoal:excersice more,Exercise 30 minutes at leats 4 times a week.,100,False
-EternalGoal:Visit the temple,go to the temple every time I can.,500
-ChecklistGoal:draw,practice my drawings by making sketches.,50,500,3,0
+SimpleGoal:read a book,finsih it this week,50,False
+EternalGoal:drink water daily,drink 4 gallons a day,20
+

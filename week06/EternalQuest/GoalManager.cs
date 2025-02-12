@@ -5,11 +5,13 @@ public class GoalManager
 {
     private List<Goal> _goals;
     private int _score;
+    private List<string> _achievements;
 
     public GoalManager()
     {
         _goals = new List<Goal>();
         _score = 0;
+        _achievements = new List<string>();
     }
 
     public void Start()
@@ -18,6 +20,7 @@ public class GoalManager
         while (running)
         {
             Console.WriteLine($"You have {_score} points.");
+            DisplayAchievements();
             Console.WriteLine("Menu Options:");
             Console.WriteLine("  1. Create New Goal");
             Console.WriteLine("  2. List Goals");
@@ -92,18 +95,26 @@ public class GoalManager
             {
                 outputFile.WriteLine(goal.GetStringRepresentation());
             }
+            outputFile.WriteLine(string.Join(",", _achievements));
         }
+        Console.WriteLine("Goals and achievements saved successfully!");
     }
 
     public void LoadGoals()
     {
         Console.Write("What is the filename for the goal file? ");
         string filename = Console.ReadLine();
+        if (!File.Exists(filename))
+        {
+            Console.WriteLine("File not found!");
+            return;
+        }
+
         string[] lines = File.ReadAllLines(filename);
         _score = int.Parse(lines[0]);
 
         _goals.Clear();
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length - 1; i++)
         {
             string[] parts = lines[i].Split(":");
             string type = parts[0];
@@ -126,6 +137,7 @@ public class GoalManager
                     break;
             }
         }
+        _achievements = new List<string>(lines[^1].Split(","));
     }
 
     public void RecordEvent()
@@ -140,5 +152,38 @@ public class GoalManager
 
         _goals[goalIndex].RecordEvent();
         _score += _goals[goalIndex].Points;
+
+        CheckAchievements();
+    }
+
+    private void CheckAchievements()
+    {
+        if (_score >= 100 && !_achievements.Contains("First 100 Points"))
+        {
+            _achievements.Add("First 100 Points");
+            Console.WriteLine("Achievement Unlocked: First 100 Points!");
+        }
+        if (_goals.Count >= 5 && !_achievements.Contains("Created 5 Goals"))
+        {
+            _achievements.Add("Created 5 Goals");
+            Console.WriteLine("Achievement Unlocked: Created 5 Goals!");
+        }
+        if (_score >= 1000 && !_achievements.Contains("Score 1000 Points"))
+        {
+            _achievements.Add("Score 1000 Points");
+            Console.WriteLine("Achievement Unlocked: Score 1000 Points!");
+        }
+    }
+
+    private void DisplayAchievements()
+    {
+        if (_achievements.Count > 0)
+        {
+            Console.WriteLine("Achievements Unlocked:");
+            foreach (var achievement in _achievements)
+            {
+                Console.WriteLine($" - {achievement}");
+            }
+        }
     }
 }
