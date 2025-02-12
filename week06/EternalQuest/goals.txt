@@ -1,0 +1,4 @@
+0
+SimpleGoal:excersice more,Exercise 30 minutes at leats 4 times a week.,100,False
+EternalGoal:Visit the temple,go to the temple every time I can.,500
+ChecklistGoal:draw,practice my drawings by making sketches.,50,500,3,0

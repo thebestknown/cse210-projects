@@ -1,10 +1,10 @@
-class EternalGoal : Goal
+public class EternalGoal : Goal
 {
-    public EternalGoal(string name, string description, int points) : base(name, description, points) { }
+    public EternalGoal(string name, string description, int points) : base(name, description, points) {}
 
     public override void RecordEvent()
     {
-        // No completion, this just add points each time
+        Console.WriteLine($"Congratulations! You have earned {Points} points!");
     }
 
     public override bool IsComplete()
@@ -14,11 +14,11 @@ class EternalGoal : Goal
 
     public override string GetDetailsString()
     {
-        return ($"[ ] {_shortName} ({_description})");
+        return ($"[ ] {ShortName} ({Description})");
     }
 
     public override string GetStringRepresentation()
     {
-        return ($"EternalGoal:{_shortName},{_description},{_points}");
+        return $"EternalGoal:{ShortName},{Description},{Points}";
     }
 }
